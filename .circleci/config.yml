@@ -47,7 +47,6 @@ jobs:
 workflows:
   dev-workflow:
     when:
-      condition:
         not:
           equal: [ "", << pipeline.parameters.username >> ]
     jobs:
@@ -59,7 +58,6 @@ workflows:
 
   prod-workflow:
     when:
-      condition:
         not:
           equal: [ "", << pipeline.parameters.admin-username >> ]
     jobs:
