@@ -1,0 +1,22 @@
+version: 2.1
+parameters:
+  image-tag:
+    type: string
+    default: "current"
+  workingdir:
+    type: string
+    default: "~/main"
+  username:
+    type: string
+  password:
+    type: string
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:<< pipeline.parameters.image-tag >>
+    steps:
+      - run: echo "Image tag used was ${IMAGETAG}"
+      - run: echo "$(pwd) == << pipeline.parameters.workingdir >>"
+      - run: echo "<< pipeline.parameters.username >>"
+      - run: echo "<< pipeline.parameters.password >>"
