@@ -24,6 +24,7 @@ jobs:
       - run: echo "$(pwd) == << pipeline.parameters.workingdir >>"
       - run: echo "username is << pipeline.parameters.username >>"
       - run: echo "password is << pipeline.parameters.password >>"
+
   uat-prod:
     docker:
       - image: cimg/node:<< pipeline.parameters.image-tag >>
