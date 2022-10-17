@@ -8,15 +8,37 @@ parameters:
     default: "~/main"
   username:
     type: string
+    default: ""
   password:
     type: string
+    default: ""
 
 jobs:
-  build:
+  build1:
     docker:
       - image: cimg/node:<< pipeline.parameters.image-tag >>
+    environment:
+      IMAGETAG: << pipeline.parameters.image-tag >>
     steps:
       - run: echo "Image tag used was ${IMAGETAG}"
       - run: echo "$(pwd) == << pipeline.parameters.workingdir >>"
-      - run: echo "<< pipeline.parameters.username >>"
-      - run: echo "<< pipeline.parameters.password >>"
+      - run: echo "username is << pipeline.parameters.username >>"
+      - run: echo "password is << pipeline.parameters.password >>"
+  build2:
+    docker:
+      - image: cimg/node:<< pipeline.parameters.image-tag >>
+    steps:
+      - when:
+          condition:
+            not:
+              equal: [ "", << pipeline.parameters.username >> ]
+          steps:
+            - run: echo "username is << pipeline.parameters.username >>"
+            - run: echo "password is << pipeline.parameters.password >>"
+      - run: echo "Not printing username & password"
+
+workflows:
+  my-workflow:
+    jobs:
+      - build1
+      - build2
