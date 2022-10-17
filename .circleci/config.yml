@@ -41,7 +41,9 @@ workflows:
   my-workflow:
     jobs:
       - manual-trigger:
-          type: approval
+        filters:
+          branches:
+            ignore: main
       - dev-uat:
           requires:
             - manual-trigger
