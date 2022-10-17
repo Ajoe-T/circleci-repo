@@ -40,10 +40,7 @@ jobs:
 workflows:
   my-workflow:
     jobs:
-      - dev-uat:
-          requires:
-            - manual-trigger
+      - dev-uat
       - uat-prod:
           requires:
-            - manual-trigger
             - dev-uat
