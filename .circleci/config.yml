@@ -40,5 +40,8 @@ jobs:
 workflows:
   my-workflow:
     jobs:
+      - hold:
+          name: approval-deploy-prod
+          type: approval
       - build1
       - build2
