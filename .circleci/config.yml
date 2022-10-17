@@ -12,6 +12,12 @@ parameters:
   password:
     type: string
     default: ""
+  admin-username:
+    type: string
+    default: ""
+  admin-password:
+    type: string
+    default: ""
 
 jobs:
   dev-uat:
@@ -34,14 +40,31 @@ jobs:
             not:
               equal: [ "", << pipeline.parameters.username >> ]
           steps:
-            - run: echo "username is << pipeline.parameters.username >>"
-            - run: echo "password is << pipeline.parameters.password >>"
+            - run: echo "username is << pipeline.parameters.admin-username >>"
+            - run: echo "password is << pipeline.parameters.admin-password >>"
       - run: echo "Not printing username & password"
 
 workflows:
-  my-workflow:
+  dev-workflow:
+    when:
+      condition:
+        not:
+          equal: [ "", << pipeline.parameters.username >> ]
     jobs:
-      - dev-uat
+      - approve-dev:
+          type: approval
+      - dev-uat:
+          requires:
+            - approve-dev
+
+  prod-workflow:
+    when:
+      condition:
+        not:
+          equal: [ "", << pipeline.parameters.admin-username >> ]
+    jobs:
+      - approve-prod:
+          type: approval
       - uat-prod:
           requires:
-            - dev-uat
+            - approve-prod
